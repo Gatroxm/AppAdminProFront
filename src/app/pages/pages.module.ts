@@ -13,6 +13,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
 import { AsccountSettingsComponent } from './asccount-settings/asccount-settings.component';
+import { PromesasComponent } from './promesas/promesas.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 @NgModule({
   declarations: [
@@ -21,13 +23,17 @@ import { AsccountSettingsComponent } from './asccount-settings/asccount-settings
     Grafica1Component,
     PagesComponent,
     AsccountSettingsComponent,
+    PromesasComponent,
+    RxjsComponent,
   ],
   exports: [
     ProgressComponent,
     DashboardComponent,
     Grafica1Component,
     PagesComponent,
-    AsccountSettingsComponent
+    AsccountSettingsComponent,
+    PromesasComponent,
+    RxjsComponent
   ],
   imports: [
     CommonModule,
