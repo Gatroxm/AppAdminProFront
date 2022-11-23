@@ -8,6 +8,7 @@ import { AsccountSettingsComponent } from './asccount-settings/asccount-settings
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
     { 
@@ -21,6 +22,7 @@ const routes: Routes = [
           { path: 'account-settings', component:AsccountSettingsComponent, data: {titulo: 'Account Settings'}},
           { path: 'promesas', component:PromesasComponent, data: {titulo: 'Pormesa'}},
           { path: 'rxjs', component:RxjsComponent, data: {titulo: 'RxJs'}},
+          { path: 'perfil', component:PerfilComponent, data: {titulo: 'Mi Perfil'}},
         ]
       },
 ];

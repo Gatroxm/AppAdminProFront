@@ -8,6 +8,7 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario.model';
 
 declare const google: any;
 
@@ -17,26 +18,44 @@ const base_url = environment.base_url;
   providedIn: 'root',
 })
 export class UsuarioService {
-  constructor(private _http: HttpClient, private _router: Router) {}
+  public usuario:Usuario = new Usuario("","");
+  constructor(private _http: HttpClient, private _router: Router) {
+  }
+
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uid(): string {
+    return this.usuario.uid || '';
+  }
 
   logout(){
     localStorage.removeItem('token');
-    google.accounts.id.revoke( 'tavoxpau@gmail.com', ()=>{
-      this._router.navigateByUrl('/login')
-    })
+    if( this.usuario.google){
+
+      return google.accounts.id.revoke( this.usuario.email, ()=>{
+        this._router.navigateByUrl('/login')
+      });
+    }
+    this._router.navigateByUrl('/login')
   }
 
   validaToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
+    
     return this._http.get(`${base_url}/login/renew`,{
       headers:{
-        'x-token': token
+        'x-token': this.token
       }
     }).pipe(
-      tap((rep: any) => {
+      map((rep: any) => {
+        console.log(rep)
+        const { email,google,img='',nombre,role,uid} = rep.usuario;
+        this.usuario = new Usuario(nombre,email,'',img,role,google, uid);
+        this.usuario.imprimirNombre();
         localStorage.setItem('token', rep.token);
+        return true;
       }),
-      map( resp=>true),
       catchError( err=> of(false))
     );
   }
@@ -48,6 +67,20 @@ export class UsuarioService {
       })
     );
   }
+
+  actualizarPerfil(data:{email: string, nombre:string, role:string}) {
+    data = {
+      ...data,
+      role:this.usuario.role || ''
+    }
+    return this._http.put(`${base_url}/usuarios/${this.uid}`, data,
+    {
+      headers:{
+        'x-token': this.token
+      }
+    });
+  }
+
   login(formData: any) {
     return this._http.post(`${base_url}/login`, formData).pipe(
       tap((rep: any) => {
