@@ -11,3 +11,16 @@
     margin: 0 auto;
     display: block;
 }
+
+.w100 {
+    width: 100px;
+}
+
+.w140 {
+    width: 140px;
+}
+
+.avatar {
+    border-radius: 100%;
+    width: 75px;
+}
